@@ -1,158 +1,111 @@
-// import { createStore } from 'vuex'
-
-//   import Vue from 'vue'
-//   import Vuex from 'vuex'
-  
-//   Vue.use(Vuex)
-  
-//   const store = new Vuex.Store({
-//     state: {
-//       count: 0
-//     },
-//     mutations: {
-//       increment(state) {
-//         state.count++
-//       },
-//       decrement(state) {
-//         state.count--
-//       }
-//     },
-//     actions: {
-//       increment(context) {
-//         context.commit('increment')
-//       },
-//       decrement(context) {
-//         context.commit('decrement')
-//       }
-//     },
-//     getters: {
-//       getCount: state => {
-//         return state.count
-//       }
-//     }
-//   })
-  
-  // export default store
-  // const state = {
-  //   products: []
-  // }
-  // const mutations = {
-  //   SET_PRODUCTS(state, products) {
-  //     state.products = products
-  //   }
-  // }
-  // const actions = {
-  //   fetchProducts({ commit }) {
-  //     // make an API call to fetch the products data
-  //     axios.get('/api/products')
-  //       .then(response => {
-  //         commit('SET_PRODUCTS', response.data)
-  //       })
-  //       .catch(error => {
-  //         console.log(error)
-  //       })
-  //   }
-  // }
-  // const getters = {
-  //   getProducts(state) {
-  //     return state.products
-  //   }
-  // }
-  import { createStore } from 'vuex'
-  import axios from 'axios';
-  // import express  from 'express';
-  const bStoreURL = "https://anime-merch-api.onrender.com"
-  
-  export default createStore({
-    state: {
-      users: null,
-      user: null,
-      products: null,
-      product: null,
-      showSpinner: true,
-      message: null
-  
+import { createStore } from 'vuex'
+import axios from 'axios'
+const Animerch = "https://anime-merch-api.onrender.com/"
+export default createStore({
+  state: {
+    users: null,
+    user: null,
+    products: null,
+    product: null,
+    showSpinner: true,
+    message: null,
+  },
+  getters: {
+  },
+  mutations: {
+    setUsers(state, values) {
+      state.users = values
     },
-    mutations: {
-      setUsers(state, values) {
-        state.users = values
-      },
-      setUser(state, value) {
-        state.user = value
-      },
-      setProducts(state, values) {
-        state.products = values
-      },
-      setProduct(state, value) {
-        state.products = value
-      },
-      setSpinner(state, value) {
-        state.showSpinner = value
-      },
-      setMessage(state, value) {
-        state.message = value
-      },
-      clearUsers(state) {
-        state.users = null
-      },
-      clearUser(state) {
-        state.user = null
-      }
+    setUser(state, values) {
+      state.user = values
     },
-    actions: {
-      async login(context, payload){
-        const res = await axios.post(`${bStoreURL}login`, payload);
-        const {result, err} = await res.data;
-        if (result) {
-          context.commit('setUser', result);
-        }
-        else {
-          context.commit('setMessage', err);
-        }
-      },
-  
-      async register(context, payload){
-        let res = await axios.post(`${bStoreURL}register`, payload);
-        let {msg, err} = await res.data;
-        if(msg){
-          context.commit('setMessage', msg);
-        }
-        else {
-          context.commit('setMessage', err);
-        }
-      },
-  
-      async adminGet({commit}, error){
-        if(error) {
-          console.error(error);
-        } else{
-          const { data } = await axios.get('/users') //replace '/admin' with your API endpoint for getting admin data
-          commit('setItems', data.items);
-        }
-      },
-      async adminCreateUser({dispatch}, user, error){
-        if(error){
-          console.error(error);
-        } else {
-          await axios.post('/register', user) //replace '/admin' with your API endpoint for creating an item
-          dispatch('register')
-        }
-      }, 
-      async adminUpdateUser({dispatch}, user, error){
-        if(error){
-          console.error(error);
-        } else {
-          await axios.post(`/user/:id/${user.id}`, user) //replace '/admin' with your API endpoint for creating an item
-          dispatch('admin')
-        }
-      }, 
-      async adminDeleteUser({dispatch}, user, error){
-        if(error){
-          console.error(error);
-        } else {
-          await axios.delete(`/admin/${user.id}`) //replace '/admin' with your API endpoint for deleting an item
-          dispatch('admin')
-        }
-      }
+    setProducts(state, values) {
+      state.products = values
+    },
+    setProduct(state, values) {
+      state.product = values
+    },
+    setSpinner(state, values) {
+      state.showSpinner = values
+    },
+    setMessage(state, values) {
+      state.message = values
     }
-  })
+  },
+  actions: {
+    async login(context, payload) {
+      const res = await axios.post(`${Animerch}login`, payload);
+      const {result, err} = await res.data;
+      if (result) {
+        context.commit('setUser', result);
+      }else {
+        context.commit('setMessage', err)
+      }
+    },
+    async register(context, payload) {
+      const res = await axios.post(`${Animerch}users`, payload)
+      const {msg, err} = await res.data;
+      if(msg) {
+        context.commit('setMessage', msg);
+      }else {
+        context.commit('setMessage', err);
+      }
+    },
+    async fetchUsers(context, payload) {
+      const res = await axios.get(`${Animerch}users`, payload);
+      console.log(await res.data);
+      if(res.data !== undefined) {
+        context.commit('setUsers', res.data);
+      }else {
+        context.commit('setUsers', res.data);
+      }
+  },
+  async fetchUserById(context, id) {
+    const res = await axios.get(`${Animerch}users/${id}`);
+    const {results, err} = await res.data;
+    if(results) {
+      context.commit('setUsers', results);
+    }else {
+      context.commit('setMessage', err);
+    }
+},
+  async updateUser(context, payload) {
+    const res = await axios.post(`${Animerch}user`, payload);
+    const {msg, err} = await res.data;
+    if(msg) {
+      context.commit('setUser', msg);
+    }else {
+      context.commit('setUser', err);
+    }
+  },
+  async fetchProducts(context){
+    const res = await axios.get(`${Animerch}products`);
+    console.log(await res.data)
+    if(res.data !== undefined){
+      context.commit('setProducts', res.data)
+    } else {context.commit('setProducts', res.data);}
+  },
+  async addProducts(context, payload){
+    const res = await axios.post(`${Animerch}products`, payload);
+    const {result, err} = await res.data;
+    if(result){
+      context.commit('setMessage', result)
+    } else {context.commit('setMessage', err);}
+  },
+},
+  modules: {
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+  

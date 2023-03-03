@@ -152,4 +152,46 @@ export default {
 .first_nav{
   margin-right: 1300px;
 }
+/* Small devices (phones, 576px and up) */
+@media (min-width: 576px) {
+  .navbar_Com {
+    height: 70px;
+  }
+  .icon {
+    width: 5em;
+    margin-right: 200px;
+  }
+  .navbar_Com ul li {
+    margin-left: 20px;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .navbar_Com {
+    height: 80px;
+  }
+  .icon {
+    width: 6em;
+    margin-right: 250px;
+  }
+  .navbar_Com ul li {
+    margin-left: 25px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .navbar_Com {
+    height: 90px;
+  }
+  .icon {
+    width: 7em;
+    margin-right: 350px;
+  }
+  .navbar_Com ul li {
+    margin-left: 30px;
+  }
+}
+
 </style>

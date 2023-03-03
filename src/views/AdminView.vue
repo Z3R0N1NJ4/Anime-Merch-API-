@@ -4,7 +4,8 @@
     <!-- <Product_CRUD/> -->
     <Add_Product/>
     <Add_User/>
-
+    <user_com/>
+    <product_com/>
   </div>
   
 
@@ -71,11 +72,13 @@ th {
 // import Product_CRUD from '@/components/ProductsCRUD.vue';
 import Add_Product from '@/components/AddProduct.vue';
 import Add_User from '@/components/AddUser.vue';
+import user_com from '@/components/UserCRUD.vue';
+import product_com from '@/components/ProductsCRUD.vue';
 
 
 export default {
   components: {
-    Add_Product, Add_User
+    Add_Product, Add_User, user_com, product_com
   },
 }
 //   data() {

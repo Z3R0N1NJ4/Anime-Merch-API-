@@ -1,6 +1,7 @@
-<template>
-    <div>
-      <h2>Add Product</h2>
+
+
+    <!-- <div>
+      <h2>Product</h2>
       <form @submit.prevent="addProduct">
         <label>Name:</label>
         <input v-model="product.name" type="text" required>
@@ -8,32 +9,38 @@
         <input v-model="product.price" type="number" required>
         <button type="submit">Add Product</button>
       </form>
-    </div>
-  </template>
+    </div> -->
   
-  <script>
-  import axios from 'axios'
+
+<template>
+    <h1>Products</h1>
+  <div>
+      <div class="card" style="width: 18rem;" v-for="product in products" :key="product">
+          <img src="" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title">{{product.prodName}}</h5>
+            <p class="card-text">{{ product.prodDescription}}</p>
+            <p class="card-text">{{ product.price}}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
   
-  export default {
-    data() {
-      return {
-        product: {
-          name: 'Add_Product',
-          price: 0
-        }
+</template>
+<script>
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
+export default {
+  setup(){
+      const store = useStore();
+      store.dispatch("fetchProducts");
+      let products = computed(() => store.state.products)
+      return{
+          products,
       }
-    },
-    methods: {
-      addProduct() {
-        axios.post('/products', this.product)
-          .then(response => {
-            console.log(response)
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      }
-    }
-  }
-  </script>
-  
+  },
+  name : 'Add_Product',
+}
+</script>
+<style lang="">
+</style>
